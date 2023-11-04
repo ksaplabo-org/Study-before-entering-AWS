@@ -27,4 +27,19 @@ AWSのシステム構成をJSONやYAMLなどのコードで記述し、テンプ
 
 
 ### IAM  
-IAM Policy IAM Role  test
+
+AWS Identity and Access Management  
+
+主な用語  
+- IAM Policy  
+  - 管理ポリシー  
+    AWSがデフォルトで用意しているポリシー  
+    いろんな場面で使用可能  
+    例）S3に対する全許可権限→AmazonS3FullAccess  
+  - インラインポリシー  
+    自分でJSONを記述するポリシー  
+    ある特定のリソースに対する特定の権限のため、他で利用することはできない。  
+
+- IAM Role  
+  複数のポリシーを1つのロールに付与して、そのロールをリソースなどにアタッチする。といった、複数のポリシーをまとめたもの  
+
