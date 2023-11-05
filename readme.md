@@ -3,7 +3,7 @@
 AWSの以下のサービスについて勉強していく。  
 - Cloud Formation  
 - IAM  
-- Lamnda  
+- Lambda  
 - Fargate  
 - Code Commit  
 
@@ -43,3 +43,10 @@ AWS Identity and Access Management
 - IAM Role  
   複数のポリシーを1つのロールに付与して、そのロールをリソースなどにアタッチする。といった、複数のポリシーをまとめたもの  
 
+### Lambda  
+
+サーバが不要でコードを実行できる  
+思い付きで出来そうなことを試してみる  
+[こちら](./Lambda/readme.md)  
+
+### Fargate  

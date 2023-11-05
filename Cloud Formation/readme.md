@@ -4,6 +4,7 @@
 1. [Try1 S3で静的サイトのデプロイ](#content1)  
 2. [Try2 S3のデプロイ](content2)  
 3. [S3のテンプレート情報](content3)  
+4. [EC2を組み立てる]  
 
 <h2 id="content1">Try1 S3で静的サイトのデプロイ</h2>  
 
@@ -190,7 +191,7 @@ S3テンプレートのパラメータについては以下のサイトにある
 https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-s3-bucket.html  
 
 
-<h2 id="content4">S3の静的サイトの公開</h2>  
+<h2 id="conten3">S3の静的サイトの公開</h2>  
 
 静的サイトをS3で作成するテンプレートを作成する。  
 一旦コンソール画面からの作成を行ってみる→[静的ウェブサイトの設定](Static%20website%20settings.md)  
@@ -298,3 +299,7 @@ Outputs:
 
 今回したデプロイは、札幌の開発ネットワークからのアクセスのみを許可したS3の静的ウェブサイトをCloudformationで作成した。  
 
+<h2 id="content4">EC2を組み立てる</h2>  
+
+EC2含めたネットワーク周りの設定をCloudFormationで作成してみる  
+まずはEC2をポータルで立ててみる。  
