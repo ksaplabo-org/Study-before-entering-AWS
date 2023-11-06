@@ -53,4 +53,7 @@ AWS Identity and Access Management
 
 ### サービス連携  
 Route53→API Gateway Endpoint→API Gateway（Firewall）→Internet Gateway  
-SQS→Lambda→Fargate→API Gateway
+SQS→Lambda→Fargate→API Gateway  
+CodeCommit→push→Cloudwatch Event→CodePipeline＆Codebiuld  
+  Codepipeline→CloudFormation  
+  Codebiuld→ECR  
