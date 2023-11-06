@@ -50,3 +50,7 @@ AWS Identity and Access Management
 [こちら](./Lambda/readme.md)  
 
 ### Fargate  
+
+### サービス連携  
+Route53→API Gateway Endpoint→API Gateway（Firewall）→Internet Gateway  
+SQS→Lambda→Fargate→API Gateway
