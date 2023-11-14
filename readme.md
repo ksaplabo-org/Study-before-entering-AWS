@@ -57,4 +57,7 @@ SQS→Lambda→Fargate→API Gateway
 CodeCommit→push→Cloudwatch Event→CodePipeline＆Codebiuld  
   Codepipeline→CloudFormation  
   Codebiuld→ECR  
-a
+
+### AWS VPC  
+以下のサイトを参考にAWS VPCの学習を行う。  
+参考：https://qiita.com/c60evaporator/items/2f24d4796202e8b06a77  
