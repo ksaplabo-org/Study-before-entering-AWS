@@ -62,3 +62,26 @@ CodeCommit→push→Cloudwatch Event→CodePipeline＆Codebiuld
 以下のサイトを参考にAWS VPCの学習を行う。  
 参考：https://qiita.com/c60evaporator/items/2f24d4796202e8b06a77  
 詳細は[こちら](./VPC/readme.md)  
+
+### AWS SQS  
+
+概要  
+マイクロサービス、分散システム、およびサーバレスアプリケーション用の完全マネージド型メッセージキュー  
+
+もう少し詳しく  
+→blackbeltの記事 https://www.slideshare.net/AmazonWebServicesJapan/20190717-aws-black-belt-online-seminar-amazon-simple-queue-service  
+
+SQSについての詳細は[こちら](./SQS/readme.md)  
+
+### ECS,Fargate  
+
+ECS：Elastic Container Sercice  
+AWSのコンテナーベースサービス  
+この辺りの用語が混乱を招きやすいためここで整理する  
+
+```
+Q ECSとは
+A フルマネージドのコンテナオーケストレーションサービス
+```
+
+ECSやFargateの詳細は[こちら]()
