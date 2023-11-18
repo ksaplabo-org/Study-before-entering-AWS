@@ -20,6 +20,15 @@ Nginxのサーバをコンテナで立てる
 ### コンテナイメージの作成、ECRへPush  
 
 ※参考手順ではローカル環境でLinuxが使えること、Dockerがあることが前提  
+[windowsにWSL2＋Docker環境を構築する手順](https://qiita.com/taka777n/items/ea3a1b3a2802aabf3db2)  
+[windowsのwslを有効化せずにwslを入れたときに出るエラー対応](https://qiita.com/miriwo/items/485381cdc2c9b14c9477)  
 
+- ポータル画面からECSの画面を開く  
+- サイドメニューのリポジトリを開く  
+- Privateリポジトリのまま、リポジトリの作成を押す
+- リポジトリ名のところにtest-webと入力し、それ以外はデフォルトのまま作成を行う  
 
+- ローカル環境でDockerImageの作成を行う  
 
+→windowsやAWSのCloudShellからDockerを試そうとしたが、どれもうまくいかず。  
+ 苦戦中
