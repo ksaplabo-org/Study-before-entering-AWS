@@ -81,7 +81,8 @@ AWSのコンテナーベースサービス
 
 ```
 Q ECSとは
-A フルマネージドのコンテナオーケストレーションサービス
+A Elastic Container Service
+  フルマネージドのコンテナオーケストレーションサービス
 ```
 
 ECSやFargateの詳細は[こちら](./ECS,Fargate/readme.md)  
