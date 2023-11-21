@@ -88,3 +88,8 @@ A Elastic Container Service
 ```
 
 ECSやFargateの詳細は[こちら](./ECS,Fargate/readme.md)  
+
+また、某学習サイトで学んだ内容を[こちら]()にアウトプットする  
+(これにはCICDの内容も含まれる)
+
+
