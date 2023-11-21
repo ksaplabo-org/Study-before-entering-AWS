@@ -80,7 +80,7 @@ CMD /root/run_apache.sh
   sed -i "s/$(echo -ne '\u200b')//g" Dockerfile  
 
 - buildの実行  
-  docker build -t ctn-cicd-hdon  
+  docker build -t ctn-cicd-hdon .  
 
 - イメージの確認  
   Ubuntuのイメージを指定したので、ダウンロードされている  
