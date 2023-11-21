@@ -32,3 +32,4 @@ Nginxのサーバをコンテナで立てる
 
 →windowsやAWSのCloudShellからDockerを試そうとしたが、どれもうまくいかず。  
  苦戦中
+
