@@ -6,6 +6,8 @@ AWSの以下のサービスについて勉強していく。
 - Lambda  
 - Fargate  
 - Code Commit  
+- API Gateway  
+- Route53  
 
 ### Cloud Formation  
 
@@ -91,5 +93,13 @@ ECSやFargateの詳細は[こちら](./ECS,Fargate/readme.md)
 
 また、某学習サイトで学んだ内容を[こちら]()にアウトプットする  
 (これにはCICDの内容も含まれる)
+
+
+### Route53  
+
+AWSのドメインサービスであることはわかるが  
+詳しいところまで分からないと、プロジェクトではついていけない  
+そのため用語等を整理する  
+
 
 
