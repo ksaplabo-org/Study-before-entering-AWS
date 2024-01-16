@@ -8,6 +8,7 @@ AWSの以下のサービスについて勉強していく。
 - Code Commit  
 - API Gateway  
 - Route53  
+- Kinesis  
 
 ### Cloud Formation  
 
