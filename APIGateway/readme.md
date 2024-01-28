@@ -1,4 +1,6 @@
 
+# API Gatewayの基本  
+
 ### API Gatewayとは  
 APIの作成及び管理を簡単に行える、フルマネージドサービスである。  
 
@@ -126,4 +128,10 @@ REST APIの場合はメソッドリクエストで、「認証」の設定を行
 - 統合リクエスト/統合レスポンスにて指定するテンプレートドキュメント  
   - VTL(Velocity template lannguage)とJSONPathや予約変数（$input等）を利用し記述  
 ![](./img/3.png)
+
+
+# AWS SAM  
+
+AWS SAMとは  
+CloudFormationの拡張機能であり、サーバレスアプリケーションの開発とデプロイを支援する機能  
 
