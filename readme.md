@@ -14,7 +14,7 @@ AWSの以下のサービスについて勉強していく。
 
 ### Cloud Formation  
 
-Infrastructure as code  
+AWSのInfrastructure as code(IaC)サービス  
 AWSのシステム構成をJSONやYAMLなどのコードで記述し、テンプレート化し  
 構成管理、修正、再利用を簡単にするためのサービス  
 
