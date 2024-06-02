@@ -1,7 +1,9 @@
 # 現場入場前勉強  
-a
+
 AWSの以下のサービスについて勉強していく。  
-- Cloud Formation  
+学習内容は各フォルダに配置している  
+
+- [Cloud Formation](./readme.md#cloud-formation)  
 - IAM  
 - Lambda  
 - Fargate  
