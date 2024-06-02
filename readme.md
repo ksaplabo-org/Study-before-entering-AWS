@@ -3,7 +3,7 @@
 AWSの以下のサービスについて勉強していく。  
 学習内容は各フォルダに配置している  
 
-- [Cloud Formation](./readme.md#cloud-formation)  
+- [Cloud Formation](#cloud-formation)  
 - IAM  
 - Lambda  
 - Fargate  
