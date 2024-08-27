@@ -1,9 +1,7 @@
 # 現場入場前勉強  
-
+a
 AWSの以下のサービスについて勉強していく。  
-学習内容は各フォルダに配置している  
-
-- [Cloud Formation](#cloud-formation)  
+- Cloud Formation  
 - IAM  
 - Lambda  
 - Fargate  
@@ -14,7 +12,7 @@ AWSの以下のサービスについて勉強していく。
 
 ### Cloud Formation  
 
-AWSのInfrastructure as code(IaC)サービス  
+Infrastructure as code  
 AWSのシステム構成をJSONやYAMLなどのコードで記述し、テンプレート化し  
 構成管理、修正、再利用を簡単にするためのサービス  
 
