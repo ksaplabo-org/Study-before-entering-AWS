@@ -1,7 +1,7 @@
 # 現場入場前勉強  
 AWSの色々なサービスの基本的な学習を行い、そのアウトプットを行う。  
 
-## 目次
+## 学習したサービス
 
 - [API Gateway](APIGateway/readme.md)
 - [CloudFormation](CloudFormation/readme.md)
@@ -13,8 +13,12 @@ AWSの色々なサービスの基本的な学習を行い、そのアウトプ�
 - [SQS](SQS/readme.md)
 - [VPC](VPC/readme.md)
 
-### IAM  
+## AWSから派生した学習
+- [TypeScript](TypeScript/readme.md)
+- [mongoDB](https://github.com/RyuTanak/mongoDB)
 
+### IAM  
+※そのうち別ページにする
 AWS Identity and Access Management  
 
 主な用語  
