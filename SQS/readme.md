@@ -1,5 +1,13 @@
 # SQS  
 
+概要  
+マイクロサービス、分散システム、およびサーバレスアプリケーション用の完全マネージド型メッセージキュー  
+
+もう少し詳しく  
+→blackbeltの記事 https://www.slideshare.net/AmazonWebServicesJapan/20190717-aws-black-belt-online-seminar-amazon-simple-queue-service  
+
+SQSについての詳細は[こちら](./SQS/readme.md)  
+
 blackbeltの記事から  
 実際に触ってみた時の話は[こちら]()
 

@@ -1,5 +1,19 @@
 # Cloud Formation  
 
+Infrastructure as code  
+AWSのシステム構成をJSONやYAMLなどのコードで記述し、テンプレート化し  
+構成管理、修正、再利用を簡単にするためのサービス  
+
+主な用語  
+- テンプレート  
+  リソースの構築内容を定義するファイル  
+  json,yamlの形式で記述可能  
+  おすすめはyaml(jsonだとコンマや波かっこのつけ忘れがあるとすぐにエラーになって修正が面倒)  
+- スタック  
+  テンプレートを利用してCloudFormationによってプロビジョニングされるAWSリソースの集合体  
+
+参考：https://qiita.com/tep731/items/0436a69f538cf051771f  
+
 ## 目次  
 1. [Try1 S3で静的サイトのデプロイ](#content1)  
 2. [Try2 S3のデプロイ](content2)  

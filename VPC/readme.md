@@ -1,5 +1,8 @@
 # AWS VPC  
 
+以下のサイトを参考にAWS VPCの学習を行う。  
+参考：https://qiita.com/c60evaporator/items/2f24d4796202e8b06a77  
+
 ※既に習得済みの部分は省略する  
 
 ### 使用可能なIPアドレス  
