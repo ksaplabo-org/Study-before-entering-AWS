@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  SampleVpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: false
+      InstanceTenancy: default
+      Tags:
+        - Key: Name
+          Value: Sample-vpc
+  SampleSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone:
+        Fn::Sub: ${AWS::Region}a
+      CidrBlock: 10.0.10.0/24
+      VpcId:
+        Ref: SampleVpc
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: Sample-Subnet-1a
+  SampleSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone:
+        Fn::Sub: ${AWS::Region}c
+      CidrBlock: 10.0.20.0/24
+      VpcId:
+        Ref: SampleVpc
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: Sample-Subnet-1c

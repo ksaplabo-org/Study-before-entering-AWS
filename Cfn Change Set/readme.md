@@ -2,10 +2,11 @@
 
 ### 目次
 
-[変更セットとは](#変数セットとは)
-[やってみよう](#やってみよう)
-[サブネットの作成](#サブネットの作成)
-[]()
+[変更セットとは](#変数セットとは)  
+[やってみよう](#やってみよう)  
+[サブネットの作成](#サブネットの作成)  
+[サブネットに名前を付ける](#サブネットに名前を付ける)  
+[変更セットの削除](#変更セットの削除)  
 
 
 ### 変数セットとは
@@ -67,5 +68,59 @@ CloudFormationのコンソールで先ほど作成したスタックを選択し
 スタックオプションはデフォルトのまま、変更セットの作成を行う  
 SubnetがAddされることがわかる。  
 <img src="./img/11.png" width="50%">
+
 このまま、変更セットを実行すると、VPCにサブネットが2つ作成される。  
+
+
+### サブネットに名前を付ける
+
+更新時はどうなるかを確認するために、サブネットに名前を追加してみます。  
+使用するテンプレートは[こちら](./test3.yml)  
+
+手順は先ほどと変わらないので省略。  
+変更アクションには、先ほどはAddだったが、今回は変更のためModifyと表示される  
+<img src="./img/12.png" width="50%">
+
+JSONの変更タブからさらに詳細を確認できる  
+<img src="./img/13.png" width="50%">
+
+以下抜粋した内容  
+```json
+{
+  "type": "Resource",
+  "resourceChange": {
+    "action": "Modify",
+    "logicalResourceId": "SampleSubnet1",
+    "physicalResourceId": "subnet-09e103226bed3fa2e",
+    "resourceType": "AWS::EC2::Subnet",
+    "replacement": "False",
+    "scope": [
+      "Tags"
+    ],
+    "details": [
+      {
+        "target": {
+          "attribute": "Tags",
+          "requiresRecreation": "Never",
+          "path": "/Properties/Tags",
+          "afterValue": "[{\"Key\":\"Name\",\"Value\":\"Sample-Subnet-1a\"}]",
+          "attributeChangeType": "Add"
+        },
+        "evaluation": "Static",
+        "changeSource": "DirectModification"
+      }
+    ],
+    "beforeContext": "{\"Properties\":{\"AvailabilityZone\":\"ap-northeast-1a\",\"CidrBlock\":\"10.0.10.0/24\",\"VpcId\":\"vpc-03218d5000f0e6fc9\",\"MapPublicIpOnLaunch\":\"false\"}}",
+    "afterContext": "{\"Properties\":{\"AvailabilityZone\":\"ap-northeast-1a\",\"CidrBlock\":\"10.0.10.0/24\",\"VpcId\":\"vpc-03218d5000f0e6fc9\",\"MapPublicIpOnLaunch\":\"false\",\"Tags\":[{\"Value\":\"Sample-Subnet-1a\",\"Key\":\"Name\"}]}}"
+  }
+},
+```
+resourceChangeが1つのリソース単位  
+detailsが変更内容の詳細  
+
+### 変更セットの削除
+
+テンプレートからサブネットを１つ消して、変更セットを作成する（テンプレートと手順も省略）  
+変更セットのアクションには「Remove」画表示される  
+Cfnを使用する上でこのRemoveが表示されたときは特に注意が必要（そのための変更セットである。）  
 
