@@ -116,3 +116,9 @@ SAM CLI, version 1.131.0
     [samconfig.toml](./sam-app/samconfig.toml) AWS SAM CLIが使用するパラメーターを保存するアプリケーションの設定ファイル  
     [template.yaml](./sam-app/template.yaml) IaCのコード  
 
+
+- サンプルの Hello World アプリケーションを構築する
+    (実行例)  
+    ```shell
+    $ cd sam-app
+    $ sam build
