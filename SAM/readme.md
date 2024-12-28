@@ -10,7 +10,7 @@ Infrastructure as Code (IaC) を使用した、サーバーレスアプリケー
 サーバレスアプリケーションの開発とデプロイを支援するためのフレームワーク  
 Lambdaと一緒に、API GatewayやDynamoDBなどを短いテンプレートで作成できるようにしたもの  
 
-※フレームワークなので、SAMテンプレートとはあるが、デプロイ方法がFCnと異なる。  
+※フレームワークなので、SAMテンプレートとはあるが、デプロイ方法がCFnと異なる。  
 
 
 ### AWS SAM CLIのインストール
@@ -106,8 +106,8 @@ SAM CLI, version 1.131.0
     [*] Validate SAM template: cd sam-app && sam validate
     [*] Test Function in the Cloud: cd sam-app && sam sync --stack-name {stack-name} --watch
     ```
-    AWS クイックスタートテンプレート[1]を選択  
-    Hello World Exampleテンプレート[1]を選択  
+    AWS クイックスタートテンプレート1を選択  
+    Hello World Exampleテンプレート1を選択  
     その他（ログ回り）はすべてYesで進めると、[sam-app](./sam-app)というフォルダがクローンされる 
 
     ***重要なファイル***  

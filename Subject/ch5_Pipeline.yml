@@ -1,0 +1,239 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: tanaka-s3bucket
+      VersioningConfiguration:
+        Status: Enabled
+
+  # S3BucketPolicy:
+  #   Type: AWS::S3::BucketPolicy
+  #   Properties:
+  #     Bucket: !Ref S3Bucket
+  #     PolicyDocument:
+  #       Version: "2012-10-17"
+  #       Statement:
+  #         - Effect: Allow
+  #           Principal:
+  #             AWS: "*"
+  #           Action:
+  #             - "s3:ListBucket"
+  #           Resource: 
+  #             - "arn:aws:s3:::${S3Bucket}/*"
+  #         # - Effect: Allow
+  #         #   Principal:
+  #         #     AWS: !Sub "arn:aws:iam::${AWS::AccountId}:role/TanakaBuildProjectRole"
+  #         #   Action:
+  #         #     - "s3:GetObject"
+  #         #   Resource: 
+  #         #     - !Sub "arn:aws:s3:::${S3Bucket}/*"
+    
+  BuildProjectRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: TanakaBuildProjectRole
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action: sts:AssumeRole
+          Effect: Allow
+          Principal:
+            Service:
+            - codebuild.amazonaws.com
+            - codepipeline.amazonaws.com
+            - codedeploy.amazonaws.com
+            - cloudformation.amazonaws.com
+  
+  BuildProjectPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: TanakaBuildProjectPolicy
+      Roles:
+        - !Ref 'BuildProjectRole'
+      PolicyDocument:
+        Statement:
+          - Effect: 'Allow'
+            Action:
+              - 'logs:CreateLogGroup'
+            Resource: !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:*
+          - Effect: 'Allow'
+            Action:
+              - 'logs:CreateLogStream'
+              - 'logs:PutLogEvents'
+            Resource: !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/TanakaCodeBuildProject:*
+          - Effect: 'Allow'
+            Action:
+              - 's3:GetObject'
+              - 's3:PutObject'
+              - 's3:ListBucket'
+            Resource:
+              - !Sub arn:aws:s3:::${S3Bucket}
+              - !Sub arn:aws:s3:::${S3Bucket}/*
+              # - !Sub ${S3Bucket.Arn}
+              # - !Sub ${S3Bucket.Arn}/*
+          - Effect: 'Allow'
+            Action:
+              - 'cloudformation:ValidateTemplate'
+              - 'cloudformation:CreateStack'
+              - 'cloudformation:UpdateStack'
+              - 'cloudformation:DeleteStack'
+              - 'cloudformation:DescribeStacks'
+              - 'cloudformation:DescribeStackResources'
+              - 'cloudformation:GetTemplate'
+            Resource: '*'     
+          - Effect: 'Allow'
+            Action:
+              - 'codecommit:GetBranch'
+              - 'codecommit:GitPull'
+              - 'codecommit:GetCommit'
+              - 'codecommit:UploadArchive'
+              - 'codecommit:GetUploadArchiveStatus'
+            Resource: !Sub arn:aws:codecommit:${AWS::Region}:${AWS::AccountId}:TanakaRepository
+          - Effect: 'Allow'
+            Action:
+              - 'codeBuild:BatchGetBuilds'
+              - 'codeBuild:StartBuild'
+              - 'codeBuild:StopBuild'
+            Resource: !Sub arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/TanakaCodeBuildProject            
+          
+  SourceEvent:
+    Type: AWS::Events::Rule
+    Properties:
+      Name: TanakaSourceEvent
+      EventPattern:
+        source:
+          - aws.codecommit
+        resources:
+          - !GetAtt 'CodeCommitRepo.Arn'
+        detail-type:
+          - CodeCommit Repository State Change
+        detail:
+            event:
+            - referenceCreated
+            - referenceUpdated
+            referenceName:
+            - master
+            referenceType:
+            - branch
+      State: ENABLED
+      Targets:
+        - Arn: !Sub 'arn:${AWS::Partition}:codepipeline:${AWS::Region}:${AWS::AccountId}:TanakaCodePipeline'
+          Id: TanakaProjectPipelineTarget
+          RoleArn: !GetAtt EventRuleRole.Arn
+
+  EventRuleRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: TanakaEventRuleRole
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action: sts:AssumeRole
+          Effect: Allow
+          Principal:
+            Service:
+            - events.amazonaws.com
+  
+  EventRulePolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: TanakaEventRulePolicy
+      Roles:
+        - !Ref 'EventRuleRole'
+      PolicyDocument:
+        Statement:
+          - Effect: 'Allow'
+            Action:
+              - 'codepipeline:StartPipelineExecution'
+            Resource: !Sub arn:${AWS::Partition}:codepipeline:${AWS::Region}:${AWS::AccountId}:TanakaCodePipeline    
+  
+  CodeCommitRepo:
+    Type: AWS::CodeCommit::Repository
+    Properties:
+      RepositoryName: TanakaRepository
+
+  CodeBuildProject:
+    Type: AWS::CodeBuild::Project
+    DependsOn:
+    - BuildProjectRole
+    Properties:
+      Artifacts:
+        Type: codepipeline
+      ServiceRole: !Ref 'BuildProjectRole'
+      Environment:
+        ComputeType: small
+        EnvironmentVariables:
+        - Name: TEMPLATE_FILE
+          Value: tanakatemplate.yml
+        - Name: S3_BUCKET_NAME
+          Value: !Ref S3Bucket
+        Image: aws/codebuild/amazonlinux2-x86_64-standard:3.0
+        Type: LINUX_CONTAINER
+      Name: TanakaCodeBuildProject
+      Source:
+        Type: codepipeline
+  
+  ProjectPipeline:
+    Type: AWS::CodePipeline::Pipeline
+    DependsOn:
+    - BuildProjectRole
+    - S3Bucket
+    - CodeBuildProject
+    - CodeCommitRepo
+    Properties:
+      ArtifactStore:
+        Location: !Ref 'S3Bucket'
+        Type: S3
+      Name: 'TanakaCodePipeline'
+      RoleArn: !GetAtt BuildProjectRole.Arn
+      Stages:
+      - Name: Source
+        Actions:
+        - ActionTypeId:
+            Category: Source
+            Owner: AWS
+            Provider: CodeCommit
+            Version: 1
+          Configuration:
+            BranchName: master
+            PollForSourceChanges: false
+            RepositoryName: TanakaRepository
+          InputArtifacts: []
+          Name: ApplicationSource
+          OutputArtifacts:
+          - Name: 'Tanaka-SourceArtifact'
+          RunOrder: 1
+      - Name: Build
+        Actions:
+        - ActionTypeId:
+            Category: Build
+            Owner: AWS
+            Provider: CodeBuild
+            Version: 1
+          Configuration:
+            ProjectName: TanakaCodeBuildProject
+          InputArtifacts:
+          - Name: 'Tanaka-SourceArtifact'
+          Name: PackageExport
+          OutputArtifacts:
+          - Name: 'Tanaka-BuildArtifact'
+          RunOrder: 1
+      - Name: Deploy
+        Actions:
+        - Name: GenerateChangeSet
+          ActionTypeId:
+            Category: Deploy
+            Owner: AWS
+            Provider: CloudFormation
+            Version: 1
+          Configuration:
+            ActionMode: CREATE_UPDATE
+            Capabilities: CAPABILITY_NAMED_IAM
+            RoleArn: !GetAtt BuildProjectRole.Arn
+            StackName: 'tanaka-ch5-stack'
+            TemplatePath: 'Tanaka-BuildArtifact::template-export.yml'
+          InputArtifacts:
+          - Name: !Sub 'Tanaka-BuildArtifact'
+          OutputArtifacts: []
+          RunOrder: 1
+
+  

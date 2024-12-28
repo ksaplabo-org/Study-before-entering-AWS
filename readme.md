@@ -14,9 +14,14 @@ AWSの色々なサービスの基本的な学習を行い、そのアウトプ�
 - [SQS](SQS/readme.md)
 - [VPC](VPC/readme.md)
 - [IAM](IAM/readme.md)
+- [SAM](SAM/readme.md)
 
 
 ## AWSから派生した学習
 - [TypeScript](TypeScript/readme.md)
 - [mongoDB](https://github.com/RyuTanak/mongoDB)
 
+
+## 課題
+
+- [その１～パイプライン作成時のIAM権限](Subject/readme.md)
