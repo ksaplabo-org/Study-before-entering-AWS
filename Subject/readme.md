@@ -1,3 +1,12 @@
+# 目次
+- [パイプライン作成時のIAM権限](#パイプライン作成時のiam権限)
+  - [状況](#状況)
+  - [試したこと](#試したこと)
+  - [解決](#解決)
+- [APIGW&Lambda統合時のエラー]()
+
+
+
 # パイプライン作成時のIAM権限
 
 ～背景～  
@@ -21,12 +30,35 @@ arn:aws:sts::xxxxxxx:assumed-role/TanakaBuildProjectRole/xxxxxxx is not authoriz
 
 ### 試したこと
 
+①  
 S3バケットのバケットポリシーにS3BucketPolicy（コメントアウトされている部分）を追加。  
 ⇒エラーの内容は変わらず。  
 
+②  
 CloudFormation用のロールを作成し、それを使用  
 ⇒エラーの内容は変わらず。  
 
+③  
 CodeStar（現在廃止）で自動作成されるパイプラインのロールをそのまま使用  
+⇒エラーの内容は変わらず。  
+
+④  
+CodeBuildで使用しているIAM Roleにフル権限＆バケットポリシーを全許可  
+⇒エラーの内容は変わらず。  
+
+### 解決  
+
+権限の問題ではなく、アーティファクトの設定ミス。  
+buildspec.ymlで出力アーティファクトを定義していないため、CodeBuild終了時のアーティファクトが  
+自動で作成された名前で出力されていた。  
+その為、次のCodeDeployでアーティファクトが取得できないことが原因だった。 
+
+```yml
+artifacts:
+  files:
+    - template-export.yml
+```
+バケットポリシーなどはなくても実行できた。
 
 
+# APIGW&Lambda統合時のエラー

@@ -25,3 +25,7 @@ AWSの色々なサービスの基本的な学習を行い、そのアウトプ�
 ## 課題
 
 - [その１～パイプライン作成時のIAM権限](Subject/readme.md)
+
+## その他
+
+- [CloudFormationのデプロイの種類](CfnActionMode/readme.md)
