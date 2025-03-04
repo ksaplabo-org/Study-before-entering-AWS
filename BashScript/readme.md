@@ -2,6 +2,7 @@
 
 - [BashScript](#bashscript)
 - [S3バケットの一覧を取得するスクリプト](#s3バケットの一覧を取得するスクリプト)
+- [S3バケット名からテストを行う]
 - [名前に規則性がある複数リソースのデプロイ](#名前に規則性がある複数リソースのデプロイ)
 
 ## BashScript
@@ -56,6 +57,33 @@ aws s3api list-buckets --query "Buckets[].Name" --output text
 
 こうすることにより、S3バケット名だけを取得することができる。  
 上記はシェルスクリプトというより、AWS CLIの紹介になった。。。  
+
+
+
+
+## S3バケット名からテストを行うスクリプト
+
+バケット名取得後、任意のバケット名があることを確認するためには以下のようなスクリプトを使用する。  
+```sh
+#!/bin/bash
+
+# 確認したいバケット名
+TARGET_BUCKET="test-backet"
+
+# S3バケット名の一覧を取得
+BUCKET_LIST=$(aws s3api list-buckets --query "Buckets[].Name" --output text)
+
+# バケット名が一覧に含まれているか確認
+if echo "$BUCKET_LIST" | grep -q "^${TARGET_BUCKET}$"; then
+  echo "Bucket '$TARGET_BUCKET' exists."
+  exit 0
+else
+  echo "Bucket '$TARGET_BUCKET' does not exist."
+  exit 1
+fi
+
+```
+テストを行う際はこのようにスクリプトを使用すると便利である。  
 
 
 ## 名前に規則性がある複数リソースのデプロイ
