@@ -20,7 +20,7 @@ AWSの色々なサービスの基本的な学習を行い、そのアウトプ�
 ## AWSから派生した学習
 - [TypeScript](TypeScript/readme.md)
 - [mongoDB](https://github.com/RyuTanak/mongoDB)
-
+- [BashScript](BashScript/readme.md)
 
 ## 課題
 

@@ -1,0 +1,108 @@
+# 目次
+
+- [BashScript](#bashscript)
+- [S3バケットの一覧を取得するスクリプト](#s3バケットの一覧を取得するスクリプト)
+- [名前に規則性がある複数リソースのデプロイ](#名前に規則性がある複数リソースのデプロイ)
+
+## BashScript
+
+AWS CLIを使ってAWS操作を行うことができるが、それをスクリプト化することでAWS操作を簡略化できる。  
+スクリプトはどのコンソールを使っても同じだが、ここではUbuntuでのBashScriptを紹介する。  
+
+## S3バケットの一覧を取得するスクリプト
+
+```sh
+#!/bin/bash
+
+# AWS CLI を使って S3 バケット一覧を取得
+aws s3api list-buckets
+```
+上記をscript1.shに保存して以下を実行
+```sh
+# スクリプトに実行権限を付与
+chmod +x script1.sh
+
+# スクリプト実行
+bash script1.sh
+```
+
+これを実行すると以下の結果を得る  
+```json
+{
+    "Buckets": [
+        {
+            "Name": "backet1",
+            "CreationDate": "2024-11-09T02:14:49.000Z"
+        },
+        {
+            "Name": "backet2",
+            "CreationDate": "2024-11-12T05:32:30.000Z"
+        },
+        ...
+    ]
+}
+```
+
+例えば、S3バケット名の一覧をテスト仕様書に添付したいときは  
+上記の結果だと、そのままコピーすることはできない。  
+
+そこで以下のように記載する。  
+```sh
+#!/bin/bash
+
+# AWS CLI を使って S3 バケット一覧を取得し、バケット名のみ表示
+aws s3api list-buckets --query "Buckets[].Name" --output text
+```
+
+こうすることにより、S3バケット名だけを取得することができる。  
+上記はシェルスクリプトというより、AWS CLIの紹介になった。。。  
+
+
+## 名前に規則性がある複数リソースのデプロイ
+
+例えば、script-lambda-001,script-lambda-002,,,のように、Lambdaを100個デプロイする際にスクリプトは役に立つ  
+
+```sh
+#!/bin/bash
+
+# デプロイするLambdaの基本名
+BASE_NAME="script-lambda"
+
+# デプロイしたい個数
+TOTAL=100
+
+# デプロイ用のZIPファイル名 (Lambdaのソースコード)
+LAMBDA_ZIP="lambda-source.zip"
+
+# S3バケット名 (Lambdaコードのアップロード先)
+S3_BUCKET="your-s3-bucket-name"
+
+# リージョン
+AWS_REGION="us-east-1"
+
+# LambdaのIAMロール
+LAMBDA_ROLE_ARN="arn:aws:iam::123456789012:role/your-lambda-role"
+
+# 1から100までの連番でループ
+for i in $(seq -w 1 $TOTAL); do
+  LAMBDA_NAME="${BASE_NAME}-${i}"
+  echo "Deploying $LAMBDA_NAME..."
+
+  # Lambdaをデプロイ
+  aws lambda create-function \
+    --function-name "$LAMBDA_NAME" \
+    --runtime nodejs18.x \
+    --role "$LAMBDA_ROLE_ARN" \
+    --handler index.handler \
+    --code S3Bucket="$S3_BUCKET",S3Key="$LAMBDA_ZIP" \
+    --region "$AWS_REGION"
+
+  echo "$LAMBDA_NAME deployed."
+done
+
+echo "All $TOTAL Lambda functions have been deployed."
+
+```
+このようのfor文を使うことで、簡単にデプロイすることができる。  
+実際の現場では、命名規則にがあり、リソース名に規則性があることが多いため、よく使うことが多い。  
+
