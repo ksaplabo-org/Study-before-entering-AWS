@@ -1,0 +1,102 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: TEST API GATEWAY DEPLOY
+Resources:
+  LambdaFunction:
+    Type: AWS::Lambda::Function
+    Description: Creating Lambda For Insert Date to DB
+    Properties:
+      Handler: index.handler
+      Role: !GetAtt IAMRole.Arn
+      FunctionName: TanakaInsData
+      LoggingConfig:
+        LogGroup: !Ref LambdaLogGroup
+      Code:
+        S3Bucket: tanaka-source-s3bucket
+        S3Key: !Ref S3Key
+      Runtime: 'nodejs18.x'
+      Timeout: 30
+  IAMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: 'Allow'
+            Principal:
+              Service: 'lambda.amazonaws.com'
+            Action: 'sts:AssumeRole'
+      Policies:
+        - PolicyName: 'TestInsDataRole'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: 'Allow'
+                Action:
+                  - 'dynamodb:PutItem'
+                Resource: !GetAtt DynamoDBTable.Arn
+        - PolicyName: 'TestMainLogRole'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: 'Allow'
+                Action:
+                  - 'logs:CreateLogGroup'
+                Resource: !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/*
+              - Effect: 'Allow'
+                Action:
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                Resource: !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/TestInsData:*
+              - Effect: 'Allow'
+                Action:
+                  - 's3:GetObject'
+                  - 's3:PutObject'
+                  - 's3:ListBucket'
+                Resource:
+                  - !Sub arn:aws:s3:::tanaka-source-s3bucket
+                  - !Sub arn:aws:s3:::tanaka-source-s3bucket/*
+
+  LambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref LambdaFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${testApi}/*/GET/test'
+
+  testApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: 'testEntry'
+
+  testResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt testApi.RootResourceId
+      PathPart: 'test'
+      RestApiId: !Ref testApi
+
+  GetMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: GET
+      ResourceId: !Ref testResource
+      RestApiId: !Ref testApi
+      Integration:
+        IntegrationHttpMethod: GET
+        Type: AWS_PROXY
+        Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations'
+
+  ApiDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn: GetMethod
+    Properties:
+      RestApiId: !Ref testApi
+      StageName: stage
+
+  LambdaLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /aws/lambda/TestInsData
+      RetentionInDays: 7

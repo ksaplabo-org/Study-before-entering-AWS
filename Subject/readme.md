@@ -63,3 +63,11 @@ artifacts:
 
 # APIGW&Lambda統合時のエラー
 
+～背景～  
+ApiGatewayとLambdaをデプロイするのだが、APIGWの統合リクエストにLambdaを設定する際    
+デプロイが行えるが、APIGWからのリクエストが必ずエラーになる。  
+対処方法としては、APIGWでタイムアウト値を適当な値に変更し保存することで解消される。（何かしらAPIGWの更新が必要）    
+その原因究明と解決を行う。  
+
+お試し中のリソース⇒[ch_Api.yml](./ch_Api.yml)  
+

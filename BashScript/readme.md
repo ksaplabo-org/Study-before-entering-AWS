@@ -4,6 +4,7 @@
 - [S3バケットの一覧を取得するスクリプト](#s3バケットの一覧を取得するスクリプト)
 - [S3バケット名からテストを行う]
 - [名前に規則性がある複数リソースのデプロイ](#名前に規則性がある複数リソースのデプロイ)
+- [Stackのステータスを取得するスクリプト](#stackのステータスを取得するスクリプト)
 
 ## BashScript
 
@@ -134,3 +135,30 @@ echo "All $TOTAL Lambda functions have been deployed."
 このようのfor文を使うことで、簡単にデプロイすることができる。  
 実際の現場では、命名規則にがあり、リソース名に規則性があることが多いため、よく使うことが多い。  
 
+
+## Stackのステータスを取得するスクリプト
+
+```sh
+#!/bin/bash
+
+# 使用するAWSプロファイル名を指定
+AWS_PROFILE="default"  # 必要に応じて変更してください
+
+# CloudFormationのスタックを取得し、COMPLETE以外を表示
+aws cloudformation list-stacks \
+  --profile "$AWS_PROFILE" \
+  --query "StackSummaries[?StackStatus!='DELETE_COMPLETE' && !contains(StackStatus, 'COMPLETE') && ParentId==null].[StackName, StackStatus]" \
+  --output text
+
+```
+
+出力例
+```sh
+$ bash list_incomplete_stacks.sh
+
+test-stack-api-gateway	ROLLBACK_IN_PROGRESS
+test-stack-lambda	UPDATE_IN_PROGRESS
+
+```
+
+これでスタックが100個あってもすぐに分かるようになります。
