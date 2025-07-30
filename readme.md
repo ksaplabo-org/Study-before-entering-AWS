@@ -21,6 +21,7 @@ AWSの色々なサービスの基本的な学習を行い、そのアウトプ�
 - [TypeScript](TypeScript/readme.md)
 - [mongoDB](https://github.com/RyuTanak/mongoDB)
 - [BashScript](BashScript/readme.md)
+- [Linuxディストリビューション](Linux/readme.md)
 
 ## 課題
 
