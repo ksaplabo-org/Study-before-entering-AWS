@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <link href="https://unpkg.com/maplibre-gl@3.x/dist/maplibre-gl.css" rel="stylesheet" />
+    <dev>test</dev>
+    <style>
+      body { margin: 0; }
+      #map { height: 100vh; }
+    </style>
+  </head>
+  <body>
+    <div id="map" />
+    <script src="https://unpkg.com/maplibre-gl@3.x/dist/maplibre-gl.js"></script>
+    <script>
+      const apiKey = "xxx";
+      const mapName = "tanakatestmap";
+      const region = "ap-northeast-1";
+
+      const map = new maplibregl.Map({
+        container: "map",
+        style: `https://maps.geo.${region}.amazonaws.com/maps/v0/maps/${mapName}/style-descriptor?key=${apiKey}`,
+        center: [-123.115898, 49.295868],
+        zoom: 11,
+      });
+      map.addControl(new maplibregl.NavigationControl(), "top-left");
+    </script>
+  </body>
+</html>
